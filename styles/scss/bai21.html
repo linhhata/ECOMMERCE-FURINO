@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <input type="text" id="new-task" placeholder="Thêm công việc">
+    <button id="add-task">Thêm</button>
+    <div>
+        <button id="filter-all">Tất cả</button>
+        <button id="filter-completed">Hoàn thành</button>
+        <button id="filter-pending">Chưa hoàn thành</button>
+    </div>
+    <ul id="task-list"></ul>
+
+    <script>
+        const taskInput = document.getElementById('new-task');
+        const taskList = document.getElementById('task-list');
+        const addTaskButton = document.getElementById('add-task');
+
+        function addTask(taskText, completed = false) {
+            const taskItem = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = completed;
+            const text = document.createTextNode(taskText);
+    
+            checkbox.addEventListener('change', function() {
+                updateTaskStyle(taskItem, checkbox.checked);
+            });
+
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(text);
+            taskList.appendChild(taskItem);
+            
+            updateTaskStyle(taskItem, completed);
+        }
+
+        
+        function updateTaskStyle(taskItem, isCompleted) {
+            if (isCompleted) {
+                taskItem.style.textDecoration = 'line-through';
+                taskItem.style.fontStyle = 'italic';
+            } else {
+                taskItem.style.textDecoration = 'none';
+                taskItem.style.fontStyle = 'normal';
+            }
+        }
+
+   
+        addTaskButton.addEventListener('click', function() {
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                addTask(taskText);
+                taskInput.value = ''; 
+                saveTasks(); 
+            }
+        });
+
+        function filterTasks(condition) {
+            const tasks = taskList.children;
+            for (let task of tasks) {
+                const isCompleted = task.querySelector('input[type="checkbox"]').checked;
+                if (condition === 'all' || 
+                   (condition === 'completed' && isCompleted) ||
+                   (condition === 'pending' && !isCompleted)) {
+                    task.style.display = 'list-item';
+                } else {
+                    task.style.display = 'none';
+                }
+            }
+        }
+
+    
+        
+    </script>
+</body>
+</html>

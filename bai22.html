@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 20px;
+            }
+
+            .search-container {
+                margin-bottom: 20px;
+            }
+
+            #postIdInput {
+                padding: 10px;
+                width: 200px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            #searchBtn {
+                padding: 10px 20px;
+                background-color: #ff6b6b;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #searchBtn:hover {
+                background-color: #ff4c4c;
+            }
+
+            .blog-container {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .blog-card {
+                width: 250px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+            .blog-card img {
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+            }
+
+            .blog-card h3 {
+                padding: 10px;
+                font-size: 18px;
+            }
+
+           
+
+    </style>
+</head>
+<body>
+    <div class="search-container"></div>
+        <input type="text" id="postIdInput" placeholder="input search id">
+        <button id="searchBtn">Search</button>
+    </div>
+    <h1>Blog Cards</h1>
+    <div id="blogContainer" class="blog-container">
+    </div>
+    <script>
+        document.getElementById('searchBtn').addEventListener('click', function() {
+        const postId = document.getElementById('postIdInput').value;
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+        .then(response => response.json())
+        .then(post => {
+        const blogContainer = document.getElementById('blogContainer');
+        blogContainer.innerHTML = ''; 
+        const blogCard = `
+                <div class="blog-card">
+                    <img src="https://th.bing.com/th/id/OIP.o99H-Jv7-jcoE-_ENLzD2AHaD_?w=285&h=180&c=7&r=0&o=5&dpr=1.4&pid=1.7" >
+                    <h3>${post.title}</h3>
+                    <p>${post.body}</p>
+                </div>
+            `;
+            blogContainer.innerHTML = blogCard;
+        })  
+});
+
+    </script>
+    
+</body>
+</html>
